@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tasksList', 'TaskController@index')->name('tasksList.index');
+Route::get('/tasksList', 'TaskController@index');
