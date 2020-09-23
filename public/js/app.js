@@ -1951,10 +1951,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     taskStore: function taskStore() {
+      var _this = this;
+
       axios.post('http://127.0.0.1:8000/tasksList', {
         name: this.name
       }).then(function (response) {
-        return console.log(response);
+        return _this.$emit('task-created', response);
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -2037,6 +2039,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    refresh: function refresh(tasks) {
+      this.tasks = tasks.data;
     }
   },
   mounted: function mounted() {
@@ -38397,7 +38402,7 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c("add-task"),
+      _c("add-task", { on: { "task-created": _vm.refresh } }),
       _vm._v(" "),
       _c(
         "ul",

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <add-task></add-task>
+        <add-task @task-created="refresh" ></add-task>
            <ul class="list-group">
                <li class="list-group-item" v-for="task in tasks.data" :key="task.id">
                    <a href="#">{{ task.name }}</a>
@@ -21,7 +21,7 @@
             }
         },
 
-    //Stock response of get request in tasks object
+        //Stock response of get request in tasks object
         created() {
             axios.get('http://127.0.0.1:8000/tasksList')
                 .then(response => this.tasks = response.data)
@@ -30,13 +30,17 @@
 
         methods: {
             // Our method to GET results from a Laravel endpoint
-		getResults(page = 1) {
-			axios.get('http://127.0.0.1:8000/tasksList?page=' + page)
-				.then(response => {
-					this.tasks = response.data;
-                })
-                .catch(error => console.log(error));
-		    }
+            getResults(page = 1) {
+                axios.get('http://127.0.0.1:8000/tasksList?page=' + page)
+                    .then(response => {
+                        this.tasks = response.data;
+                    })
+                    .catch(error => console.log(error));
+            },
+            
+            refresh(tasks) {
+                this.tasks = tasks.data
+            }
 	    },
         
 

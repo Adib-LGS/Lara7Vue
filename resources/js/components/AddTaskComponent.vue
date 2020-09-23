@@ -47,7 +47,7 @@
                 axios.post('http://127.0.0.1:8000/tasksList', {
                     name: this.name
                 })
-                .then(response => console.log(response))
+                .then(response => this.$emit('task-created', response))
                 .catch(error => console.log(error));
                     
             }
