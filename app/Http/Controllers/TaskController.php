@@ -16,7 +16,7 @@ class TaskController extends Controller
     {
         //get all Task in pagination :/
 
-        $tasks = Task::orderBy('created_at', 'DESC')->paginate(1);
+        $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
         
         return response()->json($tasks);
 
@@ -40,7 +40,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Store New Task Name
+        Task::create($request->all());
     }
 
     /**

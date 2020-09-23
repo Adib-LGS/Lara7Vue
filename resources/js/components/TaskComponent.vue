@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <add-task></add-task>
            <ul class="list-group">
                <li class="list-group-item" v-for="task in tasks.data" :key="task.id">
                    <a href="#">{{ task.name }}</a>
