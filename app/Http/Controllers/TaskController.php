@@ -99,7 +99,13 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::find($id);
+
+        if($task->delete()){
+            return $this->refresh();
+        }else{
+            return response()->json(['error' => 'Destroy method has failed'], 400);
+        }
     }
 
     private function refresh()
