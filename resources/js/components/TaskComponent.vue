@@ -1,5 +1,10 @@
 <template>
     <div class="container">
+        <div class="form-row">
+            <div class="col-row">
+                <input type="text" class="form-control" @keyup="searchTask" v-model="q" placeholder="Search">
+            </div>
+        </div>
         <add-task @task-created="refresh" ></add-task>
            <ul class="list-group">
                <li class="list-group-item" v-for="task in tasks.data" :key="task.id">
@@ -25,7 +30,8 @@
         data() {
             return {
                 tasks: {},
-                taskToEdit: ''
+                taskToEdit: '',
+                q: ''
             }
         },
 
@@ -56,6 +62,18 @@
                 axios.delete('http://127.0.0.1:8000/tasks/' + id)
                     .then(response => this.tasks = response.data)
                     .catch(error => console.log(error));
+            },
+
+            searchTask(){
+                if(this.q.length > 3) {
+                    axios.get('http://127.0.0.1:8000/tasksList/' + this.q)
+                    .then(response => this.tasks = response.data)
+                    .catch(error => console.log(error));
+                }else{
+                    axios.get('http://127.0.0.1:8000/tasksList')
+                    .then(response => this.tasks = response.data)
+                    .catch(error => console.log(error));
+                }
             },
             
             refresh(tasks) {
