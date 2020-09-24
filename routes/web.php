@@ -20,3 +20,4 @@ Route::get('/', function () {
 Route::get('/tasksList', 'TaskController@index');
 Route::post('/tasksList', 'TaskController@store');
 Route::get('tasks/edit/{id}', 'TaskController@edit');
+Route::put('tasks/edit/{id}', 'TaskController@update');

@@ -2006,7 +2006,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['taskToEdit']
+  props: ['taskToEdit'],
+  methods: {
+    update: function update() {
+      var _this = this;
+
+      axios.put('http://127.0.0.1:8000/tasks/edit/' + this.taskToEdit.id, {
+        name: this.taskToEdit.name
+      }).then(function (response) {
+        return _this.$emit('task-updated', response);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -2095,7 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       axios.get('http://127.0.0.1:8000/tasks/edit/' + id).then(function (response) {
-        return _this3.taskToEdit = response.data.name;
+        return _this3.taskToEdit = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -38364,7 +38377,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-success",
-                    attrs: { type: "submit" },
+                    attrs: { type: "submit", "data-dismiss": "modal" },
                     on: { click: _vm.taskStore }
                   },
                   [_vm._v("Add Task")]
@@ -38456,19 +38469,19 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.taskToEdit,
-                          expression: "taskToEdit"
+                          value: _vm.taskToEdit.name,
+                          expression: "taskToEdit.name"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { name: "name", id: "name", rows: "4" },
-                      domProps: { value: _vm.taskToEdit },
+                      domProps: { value: _vm.taskToEdit.name },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.taskToEdit = $event.target.value
+                          _vm.$set(_vm.taskToEdit, "name", $event.target.value)
                         }
                       }
                     })
@@ -38476,7 +38489,26 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    attrs: { type: "submit", "data-dismiss": "modal" },
+                    on: { click: _vm.update }
+                  },
+                  [_vm._v("Save Task")]
+                )
+              ])
             ])
           ]
         )
@@ -38507,27 +38539,6 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Save Task")]
       )
     ])
   }
@@ -38621,7 +38632,10 @@ var render = function() {
             ])
           }),
           _vm._v(" "),
-          _c("edit-task", { attrs: { taskToEdit: _vm.taskToEdit } })
+          _c("edit-task", {
+            attrs: { taskToEdit: _vm.taskToEdit },
+            on: { "task-updated": _vm.refresh }
+          })
         ],
         2
       ),

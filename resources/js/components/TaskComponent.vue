@@ -9,7 +9,7 @@
                         Edit
                     </button>
                 </li>
-                <edit-task v-bind:taskToEdit="taskToEdit"></edit-task>
+                <edit-task v-bind:taskToEdit="taskToEdit" @task-updated="refresh"></edit-task>
            </ul>
            <pagination :data="tasks" @pagination-change-page="getResults" class="mt-5">
 
@@ -46,7 +46,7 @@
 
             getTask(id) {
                 axios.get('http://127.0.0.1:8000/tasks/edit/' + id)
-                    .then(response => this.taskToEdit = response.data.name)
+                    .then(response => this.taskToEdit = response.data)
                     .catch(error => console.log(error));
             },
             

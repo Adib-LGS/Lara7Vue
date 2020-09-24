@@ -80,9 +80,15 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $task = Task::find($id);
+        $task->name = request('name');
+        $task->save();
+
+        if($task){
+            return $this->refresh();
+        }
     }
 
     /**
@@ -94,5 +100,14 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function refresh()
+    {
+        //get all Task in pagination :/
+
+        $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
+        
+        return response()->json($tasks);
     }
 }
