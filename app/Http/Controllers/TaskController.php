@@ -29,7 +29,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        //AddTaskComponent.vue
     }
 
     /**
@@ -68,7 +68,9 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = Task::find($id);
+
+        return response()->json($task);
     }
 
     /**
